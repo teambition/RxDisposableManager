@@ -3,18 +3,17 @@ package com.teambition.sample.disposablemanager.lifecycle;
 import android.app.Activity;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 /**
  * Copyright ©2016 by Teambition
  */
 public final class DisposableManager implements LifecycleManager<Activity, Disposable> {
-    private Map<Activity, List<Disposable>> container;
+    private Map<Activity, CompositeDisposable> container;
 
     private DisposableManager() {
         container = new WeakHashMap<>();
@@ -33,20 +32,15 @@ public final class DisposableManager implements LifecycleManager<Activity, Dispo
             return;
         }
         if (!container.containsKey(activity)) {
-            container.put(activity, new ArrayList<>());
+            container.put(activity, new CompositeDisposable());
         }
         container.get(activity).add(disposable);
-
     }
 
     @Override
     public void remove(Activity activity) {
         if (container.containsKey(activity)) {
-            for (Disposable disposable : container.get(activity)) {
-                if (!disposable.isDisposed()) {
-                    disposable.dispose();
-                }
-            }
+            container.get(activity).dispose();
             container.remove(activity);
         }
     }

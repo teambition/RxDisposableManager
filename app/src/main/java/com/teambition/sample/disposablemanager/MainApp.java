@@ -20,7 +20,6 @@ public class MainApp extends Application {
 
     @Override
     public void onCreate() {
-        Log.e(TAG,"main create");
         super.onCreate();
         // key method : can get all disposable(equal RxJava1.Subscription) by this method
         RxJavaPlugins.setOnObservableSubscribe((observable, observer) -> {
