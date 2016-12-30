@@ -44,4 +44,10 @@ public final class DisposableManager implements LifecycleManager<Activity, Dispo
             container.remove(activity);
         }
     }
+
+    public void escape(Disposable disposable){
+        for(CompositeDisposable disposables : container.values()){
+            disposables.delete(disposable);
+        }
+    }
 }

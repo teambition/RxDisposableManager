@@ -6,10 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.teambition.sample.disposablemanager.R;
+import com.teambition.sample.disposablemanager.lifecycle.ActivityStack;
+import com.teambition.sample.disposablemanager.lifecycle.DisposableManager;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
             .subscribe(num -> {
                 Log.i(TAG, "Started in onCreate(), running until destory(): " + num);
             });
+        Disposable disposable = Observable.just(" i can escape")
+            .observeOn(Schedulers.io())
+            .doOnDispose(() -> Log.e(TAG, "escape failure"))
+            .subscribe(s -> {
+                Thread.sleep(5000);
+                Log.e(TAG, "confirm:" + s + ",current activity stack:" + ActivityStack.getTop());
+            });
+        DisposableManager.getInstance().escape(disposable);
     }
 
     @Override
