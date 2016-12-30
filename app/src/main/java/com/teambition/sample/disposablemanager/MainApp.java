@@ -25,7 +25,7 @@ public class MainApp extends Application {
         RxJavaPlugins.setOnObservableSubscribe((observable, observer) -> {
             if (observer instanceof LambdaObserver) {
                 Log.e(TAG, "catch observer" + observer.hashCode());
-                DisposableManager.getInstance().add(ActivityStack.getTop(), (Disposable) observer);
+                DisposableManager.getInstance().add((Disposable) observer);
             }
             return observer;
         });
@@ -63,7 +63,7 @@ public class MainApp extends Application {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 ActivityStack.remove(activity);
-                DisposableManager.getInstance().remove(activity);
+                DisposableManager.getInstance().clear(activity);
             }
         });
     }

@@ -3,8 +3,12 @@ package com.teambition.sample.disposablemanager.lifecycle;
 /**
  * Copyright ©2016 by Teambition
  */
-public interface LifecycleManager<T, E> {
-    void add(T t, E e);
+public interface LifecycleManager<T> {
+    abstract void add(T t);
 
-    void remove(T t);
+    abstract void remove(T t);
+
+    abstract void escape(T t);
+
+    abstract void clear();
 }

@@ -14,6 +14,7 @@ and all **Observer** can be a **Disposable**.
 ###up
 * non-invasive
 * less template code
+
 ###down
 * thick granularity of control
 * can`t guarantee correct dispose (ex1: activityB on top

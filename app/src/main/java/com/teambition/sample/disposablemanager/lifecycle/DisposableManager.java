@@ -12,7 +12,7 @@ import io.reactivex.disposables.Disposable;
 /**
  * Copyright ©2016 by Teambition
  */
-public final class DisposableManager implements LifecycleManager<Activity, Disposable> {
+public final class DisposableManager implements LifecycleManager<Disposable> {
     private Map<Activity, CompositeDisposable> container;
 
     private DisposableManager() {
@@ -26,7 +26,8 @@ public final class DisposableManager implements LifecycleManager<Activity, Dispo
     }
 
     @Override
-    public void add(Activity activity, Disposable disposable) {
+    public void add(Disposable disposable) {
+        Activity activity = ActivityStack.getTop();
         if (activity == null) {
             Log.e("error", "activity stack has no item");
             return;
@@ -38,16 +39,26 @@ public final class DisposableManager implements LifecycleManager<Activity, Dispo
     }
 
     @Override
-    public void remove(Activity activity) {
-        if (container.containsKey(activity)) {
-            container.get(activity).dispose();
-            container.remove(activity);
+    public void remove(Disposable disposable) {
+        for (CompositeDisposable disposables : container.values()) {
+            disposables.remove(disposable);
         }
     }
 
-    public void escape(Disposable disposable){
-        for(CompositeDisposable disposables : container.values()){
+    public void escape(Disposable disposable) {
+        for (CompositeDisposable disposables : container.values()) {
             disposables.delete(disposable);
+        }
+    }
+
+    @Override
+    public void clear() {
+
+    }
+
+    public void clear(Activity activity) {
+        if (activity != null && container.containsKey(activity)) {
+            container.get(activity).dispose();
         }
     }
 }
