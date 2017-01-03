@@ -25,4 +25,4 @@ then we close activityB will result in that stream close . Shame)
 
 ##other plan
 * compile-time modify
-* RxLifecycle (your Activity , Fragment need extends RxActivity or RxFragment)
+* RxLifecycle (BehaviorSubject+compose)
