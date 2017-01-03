@@ -26,3 +26,8 @@ then we close activityB will result in that stream close . Shame)
 ##other plan
 * compile-time modify
 * RxLifecycle (BehaviorSubject+compose)
+
+##compare with RxLifecycle
+1. less template code
+2. not flexible enough
+3. less invasive
